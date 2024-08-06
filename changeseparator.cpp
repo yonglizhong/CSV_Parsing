@@ -1,65 +1,75 @@
 //Copied from https://www.w3resource.com/cpp-exercises/file-handling/cpp-file-handling-exercise-6.php as starting reference
 
-#include <iomanip>
 using namespace std;
+#include <iomanip>
 #include <iostream>   // Including the input/output stream library
 #include <fstream>    // Including the file stream library
 #include <string>     // Including the string handling library
 
 // Function to display the content of a file
-void displayFileContent(const std::string & filename) {
-  std::ifstream file(filename); // Open file with given filename
-  std::string line; // Declare a string to store each line of text
+void displayFileContent(const string & filename) {
+    ifstream file(filename); // Open file with given filename
+    string line; // Declare a string to store each line of text
 
-  if (file.is_open()) { // Check if the file was successfully opened
-    std::cout << "File content:" << std::endl; // Displaying a message indicating file content
-    while (std::getline(file, line)) { // Read each line from the file
-      std::cout << line << std::endl; // Display each line of the file
+    if (file.is_open()) { // Check if the file was successfully opened
+        cout << "File content:" << endl; // Displaying a message indicating file content
+        while (getline(file, line)) { // Read each line from the file
+        cout << line << endl; // Display each line of the file
+        }
+        file.close(); // Close the file
+    } else {
+        cout << "Failed to open the file." << endl; // Display an error message if file opening failed
     }
-    file.close(); // Close the file
-  } else {
-    std::cout << "Failed to open the file." << std::endl; // Display an error message if file opening failed
-  }
 }
 
 int main() {
+
+    bool firstLineExecuted = false;
     time_t start, end;
 
     time(&start);
-    std::ifstream inputFile("test.csv"); // Open the input file named "test.txt" for reading
-    std::ofstream outputFile("new_test.csv"); // Create or overwrite the output file named "new_test.txt" for writing
+    ifstream inputFile("test.csv"); // Open the input file named "test.txt" for reading
+    ofstream outputFile("new_test.csv"); // Create or overwrite the output file named "new_test.txt" for writing
 
     if (inputFile.is_open() && outputFile.is_open()) { // Check if both input and output files were successfully opened
-        std::string line; // Declare a string variable to store each line of text
-        std::string searchWord = ","; // Define the word to search for
-        std::string replaceWord = ";"; // Define the word to replace with
+        string line; // Declare a string variable to store each line of text
+        string searchWord = ","; // Define the word to search for
+        string replaceWord = ";"; // Define the word to replace with
 
-        std::cout << "Search word:" << searchWord << std::endl; // Display the word to search for
-        std::cout << "Replace word:" << replaceWord << std::endl; // Display the word to replace with
+        cout << "Search word:  " << searchWord << endl; // Display the word to search for
+        cout << "Replace word:  " << replaceWord << endl; // Display the word to replace with
 
-        std::cout << "\nBefore find and replace:" << std::endl; // Display a message before find and replace
-        displayFileContent("test.csv"); // Display the content of the input file before find and replace
+        //cout << "\nBefore find and replace:" << endl; // Display a message before find and replace
+        //displayFileContent("test.csv"); // Display the content of the input file before find and replace
 
-        while (std::getline(inputFile, line)) { // Loop through each line in the input file
-            size_t pos = line.find(searchWord); // Find the position of the search word in the line
+        while (getline(inputFile, line)) { // Loop through each line in the input file
 
-            while (pos != std::string::npos) { // Repeat until all occurrences are replaced
-                line.replace(pos, searchWord.length(), replaceWord); // Replace the search word with the replace word
-                pos = line.find(searchWord, pos + replaceWord.length()); // Find the next occurrence of the search word
+            if (firstLineExecuted == false){
+                
+                size_t pos = line.find(searchWord); // Find the position of the search word in the line
+
+                while (pos != string::npos) { // Repeat until all occurrences are replaced
+                    line.replace(pos, searchWord.length(), replaceWord); // Replace the search word with the replace word
+                    pos = line.find(searchWord, pos + replaceWord.length()); // Find the next occurrence of the search word
+                    //cout << "\nPos:" << pos << endl;
+                }
+
+                firstLineExecuted = true;
             }
+            
             outputFile << line << "\n"; // Write the modified line to the output file
         }
 
         inputFile.close(); // Close the input file
         outputFile.close(); // Close the output file
 
-        std::cout << "After find and replace:" << std::endl; // Display a message after find and replace
-        displayFileContent("new_test.csv"); // Display the content of the output file after find and replace
+        //cout << "After find and replace:" << endl; // Display a message after find and replace
+        //displayFileContent("new_test.csv"); // Display the content of the output file after find and replace
 
-        std::cout << "\nWord replaced successfully." << std::endl; // Display a success message
+        cout << "\nWord replaced successfully." << endl; // Display a success message
     } 
     else {
-        std::cout << "\nFailed to open the files." << std::endl; // Display an error message if file opening failed
+        cout << "\nFailed to open the files." << endl; // Display an error message if file opening failed
     }
    
 
@@ -68,9 +78,9 @@ int main() {
     // Calculating total time taken by the program. 
     double time_taken = double(end - start); 
 
-    std::cout << "Time taken by program is : " << std::fixed 
-        << time_taken << std::setprecision(7); 
-    std::cout << " sec " << std::endl; 
+    cout << "Time taken by program is : " << fixed 
+        << time_taken << setprecision(5); 
+    cout << " sec " << endl; 
 
     return 0; // Return 0 to indicate successful execution
 }
