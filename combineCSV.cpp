@@ -57,7 +57,8 @@ int main() {
                 size_t pos = line.find(searchWord); // Find the position of the search word in the line
                 while (pos != std::string::npos && xTimeStampRecorded == false) {
                     timeStamp = line.substr(0, pos);
-                    timeStamp_a = std::stoi(timeStamp);
+                    std::cout << timeStamp<< std::endl;
+                    timeStamp_a = std::stoll(timeStamp);
                     std::cout << timeStamp_a<< std::endl;
                     xTimeStampRecorded = true;
                     //std::cout << "executed A"<< std::endl;    
@@ -80,7 +81,8 @@ int main() {
                 size_t pos = line.find(searchWord); // Find the position of the search word in the line
                 while (pos != std::string::npos && xTimeStampRecorded == false) {
                     timeStamp = line.substr(0, pos);
-                    timeStamp_b = std::stoi(timeStamp);
+                    std::cout << timeStamp<< std::endl;
+                    timeStamp_b = std::stoll(timeStamp);
                     std::cout << timeStamp_b<< std::endl;
                     xTimeStampRecorded = true;
                     //std::cout << "executed A"<< std::endl;    
