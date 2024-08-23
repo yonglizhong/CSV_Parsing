@@ -6,6 +6,7 @@
 #include <fstream>    // Including the file stream library
 #include <string>     // Including the std::string handling library
 
+
 // Function to display the content of a file
 // void displayFileContent(const std::string & filename) {
 //     std::ifstream file(filename); // Open file with given filename
@@ -25,6 +26,14 @@
 int main() {
 
     bool firstLineExecuted = false;
+    bool xTimeStampRecorded = false;
+    unsigned long long test = 0;
+    unsigned long long timeStamp_a = 0;
+    unsigned long long timeStamp_b = 0;
+    unsigned short count = 1;
+    const unsigned short cSecondLine = 2;
+    std::string timeStamp;
+    
     time_t start, end;
 
     time(&start);
@@ -34,32 +43,55 @@ int main() {
 
     if (inputFile.is_open() && inputFileSecond.is_open() && outputFile.is_open()) { // Check if both input and output files were successfully opened
         std::string line; // Declare a std::string variable to store each line of text
-        std::string searchWord = ","; // Define the word to search for
-        std::string replaceWord = ";"; // Define the word to replace with
+        std::string searchWord = ";"; // Define the word to search for
+        std::string replaceWord = ","; // Define the word to replace with
 
-        std::cout << "Search word:  " << searchWord << std::endl; // Display the word to search for
-        std::cout << "Replace word:  " << replaceWord << std::endl; // Display the word to replace with
-
-        //std::cout << "\nBefore find and replace:" << std::endl; // Display a message before find and replace
         //displayFileContent("test.csv"); // Display the content of the input file before find and replace
 
         while (std::getline(inputFile, line)) { // Loop through each line in the input file
 
-            if (firstLineExecuted == false){
-                
+            //std::cout << "executed"<< std::endl;
+            //std::cout << line << std::endl;
+ 
+            if (count == cSecondLine){
                 size_t pos = line.find(searchWord); // Find the position of the search word in the line
-
-                while (pos != std::string::npos) { // Repeat until all occurrences are replaced
-                    line.replace(pos, searchWord.length(), replaceWord); // Replace the search word with the replace word
-                    pos = line.find(searchWord, pos + replaceWord.length()); // Find the next occurrence of the search word
-                    //std::cout << "\nPos:" << pos << std::endl;
+                while (pos != std::string::npos && xTimeStampRecorded == false) {
+                    timeStamp = line.substr(0, pos);
+                    timeStamp_a = std::stoi(timeStamp);
+                    std::cout << timeStamp_a<< std::endl;
+                    xTimeStampRecorded = true;
+                    //std::cout << "executed A"<< std::endl;    
                 }
-
-                firstLineExecuted = true;
+            count = 1;
+            xTimeStampRecorded = false;
+            break;
             }
-            
-            outputFile << line << "\n"; // Write the modified line to the output file
+            count = count + 1;
+            //outputFile << line << "\n"; // Write the modified line to the output file
+  
         }
+
+        while (std::getline(inputFileSecond, line)) { // Loop through each line in the input file
+
+            //std::cout << "executed"<< std::endl;
+            //std::cout << line << std::endl;
+ 
+            if (count == cSecondLine){
+                size_t pos = line.find(searchWord); // Find the position of the search word in the line
+                while (pos != std::string::npos && xTimeStampRecorded == false) {
+                    timeStamp = line.substr(0, pos);
+                    timeStamp_b = std::stoi(timeStamp);
+                    std::cout << timeStamp_b<< std::endl;
+                    xTimeStampRecorded = true;
+                    //std::cout << "executed A"<< std::endl;    
+                }
+            break;
+            }
+            count = count + 1;
+            //outputFile << line << "\n"; // Write the modified line to the output file
+  
+        }
+        std::cout << sizeof(test)<< std::endl;
 
         inputFile.close(); // Close the input file
         inputFileSecond.close(); // Close the 2nd file
@@ -68,7 +100,7 @@ int main() {
         //std::cout << "After find and replace:" << std::endl; // Display a message after find and replace
         //displayFileContent("new_test.csv"); // Display the content of the output file after find and replace
 
-        std::cout << "\nWord replaced successfully." << std::endl; // Display a success message
+        std::cout << "\nExecuted successfully." << std::endl; // Display a success message
     } 
     else {
         std::cout << "\nFailed to open the files." << std::endl; // Display an error message if file opening failed
